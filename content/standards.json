@@ -1,0 +1,226 @@
+[
+  {
+    "key": "kr-2022-high-기하:[12기하02-04]",
+    "code": "[12기하02-04]",
+    "schoolLevel": "high",
+    "gradeBand": "10-12",
+    "subjectKorean": "기하",
+    "domainKorean": "공간도형과 공간좌표",
+    "summary": "좌표공간에서 두 점 사이의 거리와 선분의 내분점의 좌표를 구하기",
+    "summaryKind": "mechanical-derivative",
+    "sourceRefs": [
+      "kr-moe-2022-33-annex8"
+    ],
+    "sourceLocator": {
+      "attachmentNo": "10003559",
+      "code": "[12기하02-04]",
+      "pdfPage": 165,
+      "printedPage": null,
+      "section": "기하 > 공간도형과 공간좌표",
+      "sha256": "ba7c7c63ad31ba0fd32e5eb8148d696dd73288acce111495c593298112f8f840",
+      "sourceId": "kr-moe-2022-33-annex8"
+    },
+    "deck6Id": "kr.standard.2022.high.3b11826f2e351b31431f",
+    "curriculumId": "kr-2022-high-기하",
+    "officialText": "좌표공간에서 두 점 사이의 거리와 선분의 내분점의 좌표를 구할 수 있다.",
+    "linkedTopics": [
+      {
+        "id": "kr.topic.2022.high.e9863f06e193a19df511",
+        "titleKorean": "기하 — 좌표공간에서 두 점 사이의 거리와 선분의 내분점의 좌표를 구하기"
+      }
+    ],
+    "transitionCount": 0
+  },
+  {
+    "key": "kr-2022-high-기하:[12기하02-05]",
+    "code": "[12기하02-05]",
+    "schoolLevel": "high",
+    "gradeBand": "10-12",
+    "subjectKorean": "기하",
+    "domainKorean": "공간도형과 공간좌표",
+    "summary": "구를 방정식으로 표현하기",
+    "summaryKind": "mechanical-derivative",
+    "sourceRefs": [
+      "kr-moe-2022-33-annex8"
+    ],
+    "sourceLocator": {
+      "attachmentNo": "10003559",
+      "code": "[12기하02-05]",
+      "pdfPage": 165,
+      "printedPage": null,
+      "section": "기하 > 공간도형과 공간좌표",
+      "sha256": "ba7c7c63ad31ba0fd32e5eb8148d696dd73288acce111495c593298112f8f840",
+      "sourceId": "kr-moe-2022-33-annex8"
+    },
+    "deck6Id": "kr.standard.2022.high.cc65099d26166d820a05",
+    "curriculumId": "kr-2022-high-기하",
+    "officialText": "구를 방정식으로 표현할 수 있다.",
+    "linkedTopics": [
+      {
+        "id": "kr.topic.2022.high.62dc45baf5e44fb64eb0",
+        "titleKorean": "기하 — 구를 방정식으로 표현하기"
+      }
+    ],
+    "transitionCount": 0
+  },
+  {
+    "key": "kr-2022-high-기하:[12기하03-01]",
+    "code": "[12기하03-01]",
+    "schoolLevel": "high",
+    "gradeBand": "10-12",
+    "subjectKorean": "기하",
+    "domainKorean": "벡터",
+    "summary": "벡터의 뜻을 알고, 벡터의 덧셈, 뺄셈, 실수배를 하기",
+    "summaryKind": "mechanical-derivative",
+    "sourceRefs": [
+      "kr-moe-2022-33-annex8"
+    ],
+    "sourceLocator": {
+      "attachmentNo": "10003559",
+      "code": "[12기하03-01]",
+      "pdfPage": 166,
+      "printedPage": null,
+      "section": "기하 > 벡터",
+      "sha256": "ba7c7c63ad31ba0fd32e5eb8148d696dd73288acce111495c593298112f8f840",
+      "sourceId": "kr-moe-2022-33-annex8"
+    },
+    "deck6Id": "kr.standard.2022.high.d004288a4f4ddf76942a",
+    "curriculumId": "kr-2022-high-기하",
+    "officialText": "벡터의 뜻을 알고, 벡터의 덧셈, 뺄셈, 실수배를 할 수 있다.",
+    "linkedTopics": [
+      {
+        "id": "kr.topic.2022.high.c38f3b87e44fa84c53af",
+        "titleKorean": "기하 — 벡터의 뜻을 알고, 벡터의 덧셈, 뺄셈, 실수배를 하기"
+      }
+    ],
+    "transitionCount": 0
+  },
+  {
+    "key": "kr-2022-high-기하:[12기하03-02]",
+    "code": "[12기하03-02]",
+    "schoolLevel": "high",
+    "gradeBand": "10-12",
+    "subjectKorean": "기하",
+    "domainKorean": "벡터",
+    "summary": "위치벡터의 뜻을 알고, 벡터와 좌표를 대응시켜 표현하기",
+    "summaryKind": "mechanical-derivative",
+    "sourceRefs": [
+      "kr-moe-2022-33-annex8"
+    ],
+    "sourceLocator": {
+      "attachmentNo": "10003559",
+      "code": "[12기하03-02]",
+      "pdfPage": 166,
+      "printedPage": null,
+      "section": "기하 > 벡터",
+      "sha256": "ba7c7c63ad31ba0fd32e5eb8148d696dd73288acce111495c593298112f8f840",
+      "sourceId": "kr-moe-2022-33-annex8"
+    },
+    "deck6Id": "kr.standard.2022.high.da88d099d79348ada061",
+    "curriculumId": "kr-2022-high-기하",
+    "officialText": "위치벡터의 뜻을 알고, 벡터와 좌표를 대응시켜 표현할 수 있다.",
+    "linkedTopics": [
+      {
+        "id": "kr.topic.2022.high.16ee41bfa1072d42a5b6",
+        "titleKorean": "기하 — 위치벡터의 뜻을 알고, 벡터와 좌표를 대응시켜 표현하기"
+      }
+    ],
+    "transitionCount": 0
+  },
+  {
+    "key": "kr-2022-high-기하:[12기하03-03]",
+    "code": "[12기하03-03]",
+    "schoolLevel": "high",
+    "gradeBand": "10-12",
+    "subjectKorean": "기하",
+    "domainKorean": "벡터",
+    "summary": "내적의 뜻을 알고, 두 벡터의 내적을 구하기",
+    "summaryKind": "mechanical-derivative",
+    "sourceRefs": [
+      "kr-moe-2022-33-annex8"
+    ],
+    "sourceLocator": {
+      "attachmentNo": "10003559",
+      "code": "[12기하03-03]",
+      "pdfPage": 166,
+      "printedPage": null,
+      "section": "기하 > 벡터",
+      "sha256": "ba7c7c63ad31ba0fd32e5eb8148d696dd73288acce111495c593298112f8f840",
+      "sourceId": "kr-moe-2022-33-annex8"
+    },
+    "deck6Id": "kr.standard.2022.high.1a2f445411da2b98f0f7",
+    "curriculumId": "kr-2022-high-기하",
+    "officialText": "내적의 뜻을 알고, 두 벡터의 내적을 구할 수 있다.",
+    "linkedTopics": [
+      {
+        "id": "kr.topic.2022.high.801b67d9909e5d3aeacf",
+        "titleKorean": "기하 — 내적의 뜻을 알고, 두 벡터의 내적을 구하기"
+      }
+    ],
+    "transitionCount": 0
+  },
+  {
+    "key": "kr-2022-high-기하:[12기하03-04]",
+    "code": "[12기하03-04]",
+    "schoolLevel": "high",
+    "gradeBand": "10-12",
+    "subjectKorean": "기하",
+    "domainKorean": "벡터",
+    "summary": "벡터를 이용하여 직선의 방정식을 구하기",
+    "summaryKind": "mechanical-derivative",
+    "sourceRefs": [
+      "kr-moe-2022-33-annex8"
+    ],
+    "sourceLocator": {
+      "attachmentNo": "10003559",
+      "code": "[12기하03-04]",
+      "pdfPage": 166,
+      "printedPage": null,
+      "section": "기하 > 벡터",
+      "sha256": "ba7c7c63ad31ba0fd32e5eb8148d696dd73288acce111495c593298112f8f840",
+      "sourceId": "kr-moe-2022-33-annex8"
+    },
+    "deck6Id": "kr.standard.2022.high.e4224e124ec3e9bc0a88",
+    "curriculumId": "kr-2022-high-기하",
+    "officialText": "벡터를 이용하여 직선의 방정식을 구할 수 있다.",
+    "linkedTopics": [
+      {
+        "id": "kr.topic.2022.high.e6aae7665cd5290aecde",
+        "titleKorean": "기하 — 벡터를 이용하여 직선의 방정식을 구하기"
+      }
+    ],
+    "transitionCount": 0
+  },
+  {
+    "key": "kr-2022-high-기하:[12기하03-05]",
+    "code": "[12기하03-05]",
+    "schoolLevel": "high",
+    "gradeBand": "10-12",
+    "subjectKorean": "기하",
+    "domainKorean": "벡터",
+    "summary": "좌표공간에서 벡터를 이용하여 평면의 방정식과 구의 방정식을 구하기",
+    "summaryKind": "mechanical-derivative",
+    "sourceRefs": [
+      "kr-moe-2022-33-annex8"
+    ],
+    "sourceLocator": {
+      "attachmentNo": "10003559",
+      "code": "[12기하03-05]",
+      "pdfPage": 166,
+      "printedPage": null,
+      "section": "기하 > 벡터",
+      "sha256": "ba7c7c63ad31ba0fd32e5eb8148d696dd73288acce111495c593298112f8f840",
+      "sourceId": "kr-moe-2022-33-annex8"
+    },
+    "deck6Id": "kr.standard.2022.high.42b93623b4f3a5957b2d",
+    "curriculumId": "kr-2022-high-기하",
+    "officialText": "좌표공간에서 벡터를 이용하여 평면의 방정식과 구의 방정식을 구할 수 있다.",
+    "linkedTopics": [
+      {
+        "id": "kr.topic.2022.high.b17b2228ef799daeb661",
+        "titleKorean": "기하 — 좌표공간에서 벡터를 이용하여 평면의 방정식과 구의 방정식을 구하기"
+      }
+    ],
+    "transitionCount": 0
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "name": "jecheon-girls-geometry-final",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "pdf": "node scripts/pdf.mjs",
+    "test": "node scripts/verify.mjs",
+    "serve": "node scripts/serve.mjs",
+    "deploy": "node scripts/deploy.mjs"
+  },
+  "dependencies": {
+    "@fontsource/noto-sans-kr": "5.3.1",
+    "katex": "0.19.1"
+  },
+  "devDependencies": {
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.5.438",
+    "playwright": "1.65.0"
+  }
+}
