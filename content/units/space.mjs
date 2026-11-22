@@ -1,0 +1,1 @@
+export default {id:'space',title:'공간도형과 공간좌표',color:'teal',description:'입체의 위치와 관계를 좌표로 읽습니다.',topics:['공간도형','공간좌표','구의 방정식'],concepts:[],labs:[{id:'legacy-space',href:'#height',engine:'svg',status:'available'}],questionIds:['1-01','1-02','1-03','1-04','1-07','1-08','1-09','1-10','2-07','2-10'],status:'partial'};
