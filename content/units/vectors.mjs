@@ -1,0 +1,1 @@
+export default {id:'vectors',title:'벡터',color:'blue',description:'크기와 방향으로 이동과 관계를 설명합니다.',topics:['벡터의 연산','벡터의 내적','도형의 벡터 표현'],concepts:[],labs:[{id:'legacy-vector',href:'#angle',engine:'svg',status:'available'}],questionIds:['1-05','1-06','2-01','2-02','2-03','2-04','2-05','2-06','2-08','2-09'],status:'partial'};
