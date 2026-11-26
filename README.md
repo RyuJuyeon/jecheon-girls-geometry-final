@@ -30,6 +30,7 @@ npm run serve
 
 ## 수정과 산출물
 
+- `content/labs.mjs`, `public/labs/`: 기하 실험실 8개(공간·벡터, Three.js). 자세한 내용은 docs/LABS.md.
 - `content/bank.mjs`: 문제은행 60문항과 자동 채점 칸. `public/answer.js`: 채점용 수식 해석기.
 - `content/course.mjs`: 개념, 20문항, 단계별 힌트, 정답, 풀이, 오개념, 채점 기준, 검산값. 웹과 PDF의 공통 원본입니다.
 - `content/standards.json`: MCP에서 조회한 성취기준 원문·출처 위치의 스냅샷입니다.
