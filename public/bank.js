@@ -36,7 +36,7 @@
    const right=states.filter(s=>s==='correct'||s==='approx').length,all=right===fields.length;
    const prev=valid(grades[id])?grades[id]:{tries:0,solved:false};
    const g=record?{tries:prev.tries+1,solved:prev.solved||all,inputs:fields.map(valueOf),at:Date.now()}:prev;
-   if(record){grades[id]=g;store(GRADE,grades)}
+   if(record){grades[id]=g;store(GRADE,grades);const M=window.GeometryMistakes;if(M)M.feedback(form,id,M.recordAttempt(id,all,fields.map(valueOf),id.startsWith('lab-')?'lab':'bank'))}
    if(all)result.textContent=`모두 맞았어요! (${fields.length}/${fields.length}) 해설 탭에서 내 풀이 근거와 비교해 보세요.`;
    else{const tip=g.tries>=3?'정답 탭과 해설 탭에서 풀이 과정을 확인해 보세요.':g.tries>=2?'힌트 탭을 열어 보세요.':'틀린 칸의 조건을 다시 확인해 보세요.';result.textContent=`${fields.length}칸 중 ${right}칸 맞았어요. ${tip}`+(g.solved?' (이전에 이미 맞힌 문제예요)':'')}
    result.className='check-result '+(all?'is-correct':'is-wrong');
