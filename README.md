@@ -30,6 +30,7 @@ npm run serve
 
 ## 수정과 산출물
 
+- `content/bank.mjs`: 문제은행 60문항과 자동 채점 칸. `public/answer.js`: 채점용 수식 해석기.
 - `content/course.mjs`: 개념, 20문항, 단계별 힌트, 정답, 풀이, 오개념, 채점 기준, 검산값. 웹과 PDF의 공통 원본입니다.
 - `content/standards.json`: MCP에서 조회한 성취기준 원문·출처 위치의 스냅샷입니다.
 - `public/`: 화면 스타일과 브라우저 동작입니다. 수식은 빌드 시 KaTeX로 변환합니다.
