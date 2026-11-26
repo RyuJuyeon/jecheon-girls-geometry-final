@@ -1,3 +1,4 @@
+import {buildBank} from './bank.mjs';
 import {question} from './question.mjs';
 import {platformHeader,platformHome} from './platform.mjs';
 import fs from 'node:fs/promises';
@@ -22,3 +23,5 @@ await fs.mkdir('dist/pdf',{recursive:true});
 try{await fs.cp('output/pdf','dist/pdf',{recursive:true});}catch(e){if(e.code!=='ENOENT')throw e;}
 await fs.writeFile('dist/.nojekyll','');
 console.log('정적 사이트 생성 완료 / 문항 '+questions.length+'개');
+
+await buildBank();
