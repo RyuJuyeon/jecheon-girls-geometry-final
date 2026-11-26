@@ -1,4 +1,5 @@
 import {verifyBankMath,verifyBankUI} from './verify-bank.mjs';
+import {verifyLabsMath,verifyLabsUI} from './verify-labs.mjs';
 import {checkNotebooks} from './verify-notebooks.mjs';
 import {units,navigation} from '../content/platform.mjs';
 import assert from 'node:assert/strict';import fs from 'node:fs/promises';import {spawn} from 'node:child_process';
@@ -36,8 +37,9 @@ assert.equal(dot([1,2,-1],[2,-.5,1]),0);ok('20문항 수치 독립 검산 + 직�
 const covered=new Set(questions.flatMap(q=>q.standards));for(const s of lessons.flatMap(l=>l.standards))assert.ok(covered.has(s));for(const l of lessons){assert.equal(questions.filter(q=>q.lesson===l.id&&q.stage!=='도전').length,8);assert.equal(questions.filter(q=>q.lesson===l.id&&q.stage==='도전').length,2);assert.equal(l.timing.reduce((s,t)=>s+Number(t.match(/(\d+)분/)[1]),0),50)}ok('7개 성취기준 연결 · 차시별 필수 8 + 도전 2 · 50분');
 assert.equal(units.length,3);assert.equal(new Set(units.map(u=>u.id)).size,3);
 assert.deepEqual(units.flatMap(u=>u.questionIds).sort(),questions.map(q=>q.id).sort());
-for(const u of units){assert.ok(['planned','partial'].includes(u.status));for(const lab of u.labs)assert.equal(lab.engine,'svg');}
+for(const u of units){assert.ok(['planned','partial'].includes(u.status));for(const lab of u.labs)assert.ok(['svg','three'].includes(lab.engine));}
 ok('단원 모듈 3개 · 기존 20문항 ID 연결');
+verifyLabsMath();ok('실험 8개 확인 문제 독립 계산 · 정육면체 단면 분류/최대 육각형 · 최단 경로 격자 탐색 · 관련 문항 연결');
 verifyBankMath();ok('창작 60문항 독립 검산 · 곡선/접선/거리/벡터 조건 대입 · 단원별 20문항(7/8/5) · 채점 정답=검산값 · 수식 해석기');
 const pdfs=(await fs.readdir('output/pdf')).filter(n=>n.endsWith('.pdf'));assert.equal(pdfs.length,7);for(const file of pdfs){const pdf=await PDFDocument.load(await fs.readFile('output/pdf/'+file));assert.equal(pdf.getPageCount(),file.includes('complete')?14:file.includes('concepts')?2:file.includes('worksheet')?5:6);for(const p of pdf.getPages())assert.ok(Math.abs(p.getWidth()-595.28)<2&&Math.abs(p.getHeight()-841.89)<2)}ok('PDF 7개 · 총 40쪽 · A4 규격');
 await fs.mkdir('output/qa',{recursive:true});await fs.mkdir('tmp/qa',{recursive:true});
@@ -56,6 +58,7 @@ await tab.locator('#height').fill('3');await tab.locator('#height').dispatchEven
 tab.once('dialog',dialog=>dialog.accept());await tab.locator('#reset').click();assert.ok(!(await tab.locator('[data-save="q-1-01"]').isChecked()));await tab.reload();assert.ok(!(await tab.locator('[data-save="q-1-01"]').isChecked()));ok('힌트 2단계 · 해설 · 저장/재접속 · 초기화 · 공간/내적 시각화');
 const links=await tab.locator('a[href]').evaluateAll(els=>els.map(e=>e.getAttribute('href')));for(const href of [...new Set(links)])if(href.startsWith('#')){assert.equal(await tab.locator(href).count(),1,href)}else if(!href.startsWith('http')){const response=await tab.request.get('http://127.0.0.1:4175/dist/'+href);assert.equal(response.status(),200,href);if(href.endsWith('.pdf'))assert.match(response.headers()['content-type'],/pdf/)}ok('모든 내부 이동과 PDF 다운로드 링크 응답 확인');
 await checkNotebooks(tab,b);ok('손풀이 20개 · 필기/지우개/취소/복원/PNG · 키보드 탭 · 펜/터치 분리 · 저장 실패 안내');
+await verifyLabsUI(tab);ok('실험 8개 페이지 · 3D/2D 화면 · 조작 결과(단면·정사영·최단경로·접하는 구·벡터 합·배·직선과 평면·유사도) · 실험 채점 · 좁은 화면 · 내부 링크');
 await verifyBankUI(tab,b);ok('문제은행 필터/상태/검색/URL 복원 · 60개 학습 페이지/탭/채점 칸 · 자동 채점·근삿값·각도·선택형·복원 · 개별 저장');
 // 실제 PDF 페이지를 PDF.js로 렌더링하고 텍스트도 추출한다. 검수 파일은 배포 폴더 밖에 둔다.
 await fs.writeFile('tmp/qa/viewer.html',`<!doctype html><html><head><style>body{margin:0;background:#dbe1d8;font-family:sans-serif}.sheet{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}canvas{width:100%;height:auto;display:block;background:white}.label{padding:6px;font-size:12px}</style></head><body><div class="sheet"></div><script type="module">import * as pdfjs from '/node_modules/pdfjs-dist/build/pdf.mjs';pdfjs.GlobalWorkerOptions.workerSrc='/node_modules/pdfjs-dist/build/pdf.worker.mjs';window.renderPDF=async function(file){document.querySelector('.sheet').innerHTML='';const pdf=await pdfjs.getDocument({url:'/dist/pdf/'+file}).promise;let texts=[];for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i);texts.push((await p.getTextContent()).items.map(x=>x.str).join(' '));const box=document.createElement('div');box.innerHTML='<div class="label">'+file+' · '+i+'</div>';const canvas=document.createElement('canvas');const v=p.getViewport({scale:1.2});canvas.width=v.width;canvas.height=v.height;box.append(canvas);document.querySelector('.sheet').append(box);await p.render({canvasContext:canvas.getContext('2d'),viewport:v}).promise;}return texts;};</script></body></html>`);
