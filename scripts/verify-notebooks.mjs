@@ -12,7 +12,7 @@ export async function checkNotebooks(tab,b){
   await status.filter({hasText:'저장됨'}).waitFor();
   const snapshot=()=>canvas.evaluate(c=>c.toDataURL());const written=await snapshot();
   await q.locator('[data-action="undo"]').click();const empty=await snapshot();assert.notEqual(empty,written);
-  await q.locator('[data-action="redo"]').click();assert.equal(await snapshot(),written);
+  await q.locator('[data-action="redo"]').click();await status.filter({hasText:'저장됨'}).waitFor();assert.equal(await snapshot(),written);
   await tab.reload();await tab.locator('#tab-1-01-write').click();await q.locator('textarea:not([disabled])').waitFor();assert.equal(await q.locator('textarea').inputValue(),'거리의 제곱 = 3² + 4²');assert.equal(await snapshot(),written);
   assert.equal(await tab.locator('#q-2-09 textarea').inputValue(),'');
   await q.locator('[data-tool="eraser"]').click();await canvas.scrollIntoViewIfNeeded();box=await canvas.boundingBox();await tab.mouse.move(box.x+box.width*.4,box.y+box.height*.1);await tab.mouse.down();await tab.mouse.move(box.x+box.width*.4,box.y+box.height*.7,{steps:10});await tab.mouse.up();assert.notEqual(await snapshot(),written);await q.locator('[data-action="undo"]').click();assert.equal(await snapshot(),written);
