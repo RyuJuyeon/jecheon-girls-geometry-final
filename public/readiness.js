@@ -1,8 +1,9 @@
-// 기말 대비 준비도와 예상 점수(참고용). 문제은행·실험 채점 기록과 오답노트만 사용하며, 이 브라우저 안에서 계산한다.
-// 예상 점수는 실제 시험 결과로 맞춰 본 공식이 아니므로 범위로 보여 주고, 푼 문제가 적으면 예측하지 않는다.
+// 기말 대비 단원별 준비도와 준비 단계(참고용). 문제은행·실험 채점 기록과 오답노트만 사용하며, 이 브라우저 안에서 계산한다.
+// 실제 시험 결과로 맞춰 본 공식이 아니므로 점수로 말하지 않고 준비도 범위와 단계로 보여 주며, 푼 문제가 적으면 보여 주지 않는다.
 export const EXAM_UNITS=['space','vectors'];
 export const UNIT_WEIGHT={space:.5,vectors:.5};
 export const STAGE_WEIGHT={'기본':1,'적용':2,'도전':3,'실험':2};
+export const STAGES=['기본 다지기','조금만 더','안정권','탄탄해요'];
 export const MIN_TOTAL=15,MIN_PER_UNIT=4,PRIOR=.6,PRIOR_WEIGHT=4;
 // 한 문항의 성취: 한 번에 맞힘 1, 여러 번 만에 맞힘 0.8, 오답노트 졸업 1, 남은 오답은 맞혔어도 0.5, 틀림 0. 안 푼 문항은 null.
 export function credit(id,grades,mistakes){
@@ -29,6 +30,8 @@ export function compute({items,grades={},mistakes={}}){
   prediction={mid,low:Math.max(0,mid-half),high:Math.min(100,mid+half),coverage:cov};
  }
  const need={total:Math.max(0,MIN_TOTAL-attempted),perUnit:Object.fromEntries(EXAM_UNITS.map(u=>[u,Math.max(0,MIN_PER_UNIT-units[u].attempted)]))};
- const level=prediction?(prediction.mid>=90?'탄탄해요':prediction.mid>=75?'안정권이에요':prediction.mid>=60?'조금만 더!':'기본부터 다시 다져요'):null;
- return {units,attempted,total,prediction,need,level};
+ // 준비 단계(1~4). 점수 대신 단계로 보여 준다.
+ const stage=prediction?(prediction.mid>=90?4:prediction.mid>=75?3:prediction.mid>=60?2:1):0;
+ const level=stage?STAGES[stage-1]:null;
+ return {units,attempted,total,prediction,need,stage,level};
 }

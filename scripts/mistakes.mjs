@@ -20,7 +20,7 @@ export async function buildMistakes(){
  const items=mistakeItems();
  const meta=items.map(({prompt,answer,solution,misconception,...m})=>({...m,unitTitle:titleOf(m.unit)}));
  const templates=items.map(i=>`<template id="tpl-${esc(i.id)}"><div class="m-prompt">${i.prompt}</div><div class="m-answer">${i.answer}</div><div class="m-solution">${i.solution}</div><div class="m-mis">${i.misconception}</div></template>`).join('');
- const html=head('오답노트 | 공간을 읽는 기하 2.0','<link rel="stylesheet" href="platform.css"><link rel="stylesheet" href="bank.css"><link rel="stylesheet" href="mistakes.css">')
+ const html=head('오답노트 | 공간을 읽는 기하 2.0','<link rel="stylesheet" href="platform.css"><link rel="stylesheet" href="bank.css"><link rel="stylesheet" href="mistakes.css"><link rel="stylesheet" href="exam.css">')
  +`<body><a class="skip" href="#main">본문으로 건너뛰기</a>${header()}<main id="main" class="section-wrap mistakes-page">
 <div class="m-print-head" aria-hidden="true"><h1>기하 오답노트</h1><p id="m-print-who"></p><p id="m-print-meta"></p></div>
 <p class="eyebrow">MISTAKE NOTEBOOK</p><h1>틀린 문제가<br>내 것이 되는 오답노트.</h1>
@@ -31,11 +31,11 @@ export async function buildMistakes(){
 <p id="m-count" role="status"></p>
 <section id="m-list" class="m-list" aria-label="오답 목록"></section>
 <div id="m-empty" class="m-empty" hidden><p><b>아직 오답노트가 비어 있어요.</b></p><p><a href="bank.html">문제은행</a>이나 <a href="index.html#labs">실험실</a>에서 문제를 풀고 채점해 보세요. 틀린 문제는 자동으로 여기에 담겨요. 기말고사 집중 복습 문제는 문제 아래 "오답노트에 추가" 버튼으로 담을 수 있어요.</p></div>
-<section class="m-print" aria-labelledby="m-print-title"><h2 id="m-print-title">제출용 인쇄 · PDF 저장</h2><p class="work-help">아래 칸은 인쇄할 때만 쓰이고 저장되지 않아요. 인쇄 창에서 "PDF로 저장"을 고르면 파일로 저장할 수 있어요.</p>
+<section class="m-backup" id="m-backup" aria-label="학습 기록 내보내기와 불러오기"></section><section class="m-print" aria-labelledby="m-print-title"><h2 id="m-print-title">제출용 인쇄 · PDF 저장</h2><p class="work-help">아래 칸은 인쇄할 때만 쓰이고 저장되지 않아요. 인쇄 창에서 "PDF로 저장"을 고르면 파일로 저장할 수 있어요.</p>
 <div class="m-print-fields"><label>학년<input name="grade" maxlength="4" autocomplete="off"></label><label>반<input name="class" maxlength="4" autocomplete="off"></label><label>번호<input name="no" maxlength="4" autocomplete="off"></label><label>이름<input name="name" maxlength="20" autocomplete="off"></label></div>
 <label class="lab-toggle"><input type="checkbox" id="m-print-solution" checked> 정답과 해설 함께 인쇄</label><button type="button" id="m-print" class="small-button">지금 보이는 목록 인쇄 · PDF 저장</button><p id="m-print-status" role="status"></p></section>
 </main><footer><b>공간을 읽는 기하 2.0</b><span>창작 학습 자료 · 개인정보 수집 없음</span><a href="index.html">메인으로</a></footer>
 <script type="application/json" id="m-items">${JSON.stringify(meta).replace(/</g,'\\u003c')}</script>${templates}
-<script src="mistakes.js" defer></script><script src="bank.js" defer></script><script src="mistakes-page.js" defer></script></body></html>`;
+<script src="mistakes.js" defer></script><script src="backup.js" defer></script><script src="bank.js" defer></script><script src="mistakes-page.js" defer></script></body></html>`;
  await fs.writeFile('dist/mistakes.html',html);
 }

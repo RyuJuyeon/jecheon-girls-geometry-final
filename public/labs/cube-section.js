@@ -7,7 +7,7 @@ const KEY='geometry-lab-cube-found';let found={};try{found=JSON.parse(localStora
 ui.heading('자르는 평면 ax + by + cz = d');
 const nv=ui.vector({label:'법선벡터 (a, b, c)',value:n,min:-3,max:3,onInput:v=>{n=v;fitD();draw()}});
 const ds=ui.slider({label:'d (평면의 위치)',min:0,max:6,step:.05,value:d,onInput:v=>{d=v;draw()}});
-ui.note('프리셋으로 시작한 뒤 a, b, c와 d를 바꿔 보세요. 오각형과 육각형은 프리셋이 없어요. 직접 찾아보세요!');
+ui.note('프리셋으로 시작한 뒤 a, b, c와 d를 바꿔 보세요. 오각형과 육각형은 프리셋이 없어요. 직접 찾아보세요! 단면의 변 하나하나가 어느 면 위에 있는지도 살펴보세요.');
 const presets=[['정삼각형',[1,1,1],1],['정사각형',[0,0,1],1],['직사각형',[1,1,0],2],['마름모',[1,1,3],4],['사다리꼴',[2,2,1],3]];
 ui.buttons(presets.map(([name,pn,pd])=>[name,()=>{n=[...pn];nv.set(n);fitD();d=pd;ds.set(d);draw()}]));
 const out=ui.readouts([['eq','평면의 방정식'],['sides','단면의 변의 개수'],['shape','단면의 모양'],['area','단면의 넓이']]);
