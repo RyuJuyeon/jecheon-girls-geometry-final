@@ -1,6 +1,7 @@
 import {verifyBankMath,verifyBankUI} from './verify-bank.mjs';
 import {verifyLabsMath,verifyLabsUI} from './verify-labs.mjs';
 import {verifyMistakeRules,verifyMistakesUI} from './verify-mistakes.mjs';
+import {verifyExam,verifyExamUI} from './verify-exam.mjs';
 import {checkNotebooks} from './verify-notebooks.mjs';
 import {units,navigation} from '../content/platform.mjs';
 import assert from 'node:assert/strict';import fs from 'node:fs/promises';import {spawn} from 'node:child_process';
@@ -40,6 +41,7 @@ assert.equal(units.length,3);assert.equal(new Set(units.map(u=>u.id)).size,3);
 assert.deepEqual(units.flatMap(u=>u.questionIds).sort(),questions.map(q=>q.id).sort());
 for(const u of units){assert.ok(['planned','partial'].includes(u.status));for(const lab of u.labs)assert.ok(['svg','three'].includes(lab.engine));}
 ok('단원 모듈 3개 · 기존 20문항 ID 연결');
+{const n=verifyExam();ok(`변형 문제 21유형 × 400개(${n}개) 독립 재계산·수식 렌더링·다양성 · 문제은행/복습/실험 유형 연결 · 준비도·예상 점수 규칙(최소 문항, 범위, 오답·졸업 반영)`)}
 verifyMistakeRules();ok('오답노트 규칙: 자동 수집 · 이유 필수 · 같은 날 졸업 불가 · 자정 경계 · 재오답 시 다시 열림 · 수동 추가/스스로 확인 · 손상 데이터 · 88개 문항 연결');
 verifyLabsMath();ok('실험 8개 확인 문제 독립 계산 · 정육면체 단면 분류/최대 육각형 · 최단 경로 격자 탐색 · 관련 문항 연결');
 verifyBankMath();ok('창작 60문항 독립 검산 · 곡선/접선/거리/벡터 조건 대입 · 단원별 20문항(7/8/5) · 채점 정답=검산값 · 수식 해석기');
@@ -60,6 +62,7 @@ await tab.locator('#height').fill('3');await tab.locator('#height').dispatchEven
 tab.once('dialog',dialog=>dialog.accept());await tab.locator('#reset').click();assert.ok(!(await tab.locator('[data-save="q-1-01"]').isChecked()));await tab.reload();assert.ok(!(await tab.locator('[data-save="q-1-01"]').isChecked()));ok('힌트 2단계 · 해설 · 저장/재접속 · 초기화 · 공간/내적 시각화');
 const links=await tab.locator('a[href]').evaluateAll(els=>els.map(e=>e.getAttribute('href')));for(const href of [...new Set(links)])if(href.startsWith('#')){assert.equal(await tab.locator(href).count(),1,href)}else if(!href.startsWith('http')){const response=await tab.request.get('http://127.0.0.1:4175/dist/'+href);assert.equal(response.status(),200,href);if(href.endsWith('.pdf'))assert.match(response.headers()['content-type'],/pdf/)}ok('모든 내부 이동과 PDF 다운로드 링크 응답 확인');
 await checkNotebooks(tab,b);ok('손풀이 20개 · 필기/지우개/취소/복원/PNG · 키보드 탭 · 펜/터치 분리 · 저장 실패 안내');
+await verifyExamUI(b);ok('나의 시험 준비: 잠금/예상 점수 범위 표시 · 오답 유형 맞춤 복습 · 변형 문제 채점·연속 정답·완료 · 같은 번호 같은 문제 · 좁은 화면');
 await verifyMistakesUI(b);ok('오답노트 화면: 채점 후 자동 수집·이유 저장 · 다른 날 졸업 · 실험/복습 문항 · 필터·URL · 두 번 눌러 빼기 · A4 인쇄 머리글(이름 미저장) · 좁은 화면');
 await verifyLabsUI(tab);ok('실험 8개 페이지 · 3D/2D 화면 · 조작 결과(단면·정사영·최단경로·접하는 구·벡터 합·배·직선과 평면·유사도) · 실험 채점 · 좁은 화면 · 내부 링크');
 await verifyBankUI(tab,b);ok('문제은행 필터/상태/검색/URL 복원 · 60개 학습 페이지/탭/채점 칸 · 자동 채점·근삿값·각도·선택형·복원 · 개별 저장');
