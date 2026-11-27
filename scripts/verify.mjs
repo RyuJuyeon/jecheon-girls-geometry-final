@@ -2,6 +2,7 @@ import {verifyBankMath,verifyBankUI} from './verify-bank.mjs';
 import {verifyLabsMath,verifyLabsUI} from './verify-labs.mjs';
 import {verifyMistakeRules,verifyMistakesUI} from './verify-mistakes.mjs';
 import {verifyExam,verifyExamUI} from './verify-exam.mjs';
+import {verifyFeedback,verifyFeedbackUI} from './verify-feedback.mjs';
 import {checkNotebooks} from './verify-notebooks.mjs';
 import {units,navigation} from '../content/platform.mjs';
 import assert from 'node:assert/strict';import fs from 'node:fs/promises';import {spawn} from 'node:child_process';
@@ -41,6 +42,7 @@ assert.equal(units.length,3);assert.equal(new Set(units.map(u=>u.id)).size,3);
 assert.deepEqual(units.flatMap(u=>u.questionIds).sort(),questions.map(q=>q.id).sort());
 for(const u of units){assert.ok(['planned','partial'].includes(u.status));for(const lab of u.labs)assert.ok(['svg','three'].includes(lab.engine));}
 ok('단원 모듈 3개 · 기존 20문항 ID 연결');
+verifyFeedback();ok('개수 자동 계산(메인·복습·PDF 목록) · 기록 백업 정리/합치기/거부 · 결과 요약 코드 왕복/변조 감지/개인정보 없음');
 {const n=verifyExam();ok(`변형 문제 21유형 × 400개(${n}개) 독립 재계산·수식 렌더링·다양성 · 문제은행/복습/실험 유형 연결 · 준비도·예상 점수 규칙(최소 문항, 범위, 오답·졸업 반영)`)}
 verifyMistakeRules();ok('오답노트 규칙: 자동 수집 · 이유 필수 · 같은 날 졸업 불가 · 자정 경계 · 재오답 시 다시 열림 · 수동 추가/스스로 확인 · 손상 데이터 · 88개 문항 연결');
 verifyLabsMath();ok('실험 8개 확인 문제 독립 계산 · 정육면체 단면 분류/최대 육각형 · 최단 경로 격자 탐색 · 관련 문항 연결');
@@ -50,18 +52,19 @@ await fs.mkdir('output/qa',{recursive:true});await fs.mkdir('tmp/qa',{recursive:
 const server=spawn(process.execPath,['scripts/serve.mjs','.'],{env:{...process.env,PORT:'4175'},stdio:'pipe'});await new Promise((resolve,reject)=>{server.stdout.once('data',resolve);server.once('error',reject)});
 const b=await browser();try{const tab=await b.newPage();const errors=[];tab.on('pageerror',e=>errors.push(e.message));const res=await tab.goto('http://127.0.0.1:4175/dist/');assert.equal(res.status(),200);await tab.evaluate(()=>document.fonts.ready);assert.equal(await tab.locator('.question').count(),20);assert.equal(await tab.locator('.katex-error').count(),0);
 for(const width of [1440,768,390,320]){await tab.setViewportSize({width,height:1000});await tab.evaluate(()=>document.fonts.ready);const overflow=await tab.evaluate(()=>({page:document.documentElement.scrollWidth>window.innerWidth+1,items:[...document.querySelectorAll('.question,.concept')].filter(e=>e.scrollWidth>e.clientWidth+2).map(e=>e.id||e.querySelector('h3')?.textContent)}));assert.ok(!overflow.page,'page overflow '+width);assert.deepEqual(overflow.items,[],'content overflow '+width);await tab.screenshot({path:`output/qa/site-${width}.png`,fullPage:width===1440});}ok('1440·768·390·320px 화면 폭 · 수식 렌더링 · 가로 넘침 없음');
-assert.equal(await tab.locator('#platform-nav a').count(),7);
+assert.equal(await tab.locator('#platform-nav a').count(),8);assert.equal(await tab.locator('#platform-nav a',{hasText:'변형 문제 연습'}).getAttribute('href'),'drill.html');
 for(const [id] of navigation)assert.equal(await tab.locator('#'+id).count(),1);
 await tab.locator('.menu-toggle').click();assert.equal(await tab.locator('.menu-toggle').getAttribute('aria-expanded'),'true');
 await tab.locator('#platform-nav a[href="#labs"]').click();assert.equal(await tab.locator('.menu-toggle').getAttribute('aria-expanded'),'false');assert.equal(new URL(tab.url()).hash,'#labs');
 await tab.locator('.menu-toggle').click();await tab.locator('#platform-nav a').first().focus();await tab.keyboard.press('Escape');assert.equal(await tab.locator('.menu-toggle').getAttribute('aria-expanded'),'false');
 const noScript=await b.newContext({javaScriptEnabled:false,viewport:{width:390,height:900}});const staticTab=await noScript.newPage();await staticTab.goto('http://127.0.0.1:4175/dist/');assert.ok(await staticTab.locator('#platform-nav').isVisible());await noScript.close();
-ok('7개 메뉴 · 모바일 열기/닫기/키보드 · JavaScript 없는 메뉴');
+ok('8개 메뉴(변형 문제 연습 포함) · 모바일 열기/닫기/키보드 · JavaScript 없는 메뉴');
 await tab.setViewportSize({width:1440,height:1000});await tab.locator('#tab-1-01-hint').click();await tab.locator('#q-1-01 details').first().locator('summary').first().click();await tab.locator('#q-1-01 details details summary').click();assert.ok(await tab.locator('#q-1-01 details details').evaluate(x=>x.open));await tab.locator('#tab-1-01-answer').click();await tab.locator('#q-1-01 .answer summary').click();assert.ok(await tab.locator('#q-1-01 .answer').evaluate(x=>x.open));await tab.locator('[data-save="q-1-01"]').check();await tab.reload();assert.ok(await tab.locator('[data-save="q-1-01"]').isChecked());assert.match(await tab.locator('#progress-1').textContent(),/필수 1\/8/);
 await tab.locator('#height').fill('3');await tab.locator('#height').dispatchEvent('input');assert.match(await tab.locator('#space-reading').textContent(),/√34/);await tab.locator('#angle').fill('90');await tab.locator('#angle').dispatchEvent('input');assert.match(await tab.locator('#vector-reading').textContent(),/수직/);await tab.locator('#angle').fill('180');await tab.locator('#angle').dispatchEvent('input');assert.match(await tab.locator('#vector-reading').textContent(),/-6/);
 tab.once('dialog',dialog=>dialog.accept());await tab.locator('#reset').click();assert.ok(!(await tab.locator('[data-save="q-1-01"]').isChecked()));await tab.reload();assert.ok(!(await tab.locator('[data-save="q-1-01"]').isChecked()));ok('힌트 2단계 · 해설 · 저장/재접속 · 초기화 · 공간/내적 시각화');
 const links=await tab.locator('a[href]').evaluateAll(els=>els.map(e=>e.getAttribute('href')));for(const href of [...new Set(links)])if(href.startsWith('#')){assert.equal(await tab.locator(href).count(),1,href)}else if(!href.startsWith('http')){const response=await tab.request.get('http://127.0.0.1:4175/dist/'+href);assert.equal(response.status(),200,href);if(href.endsWith('.pdf'))assert.match(response.headers()['content-type'],/pdf/)}ok('모든 내부 이동과 PDF 다운로드 링크 응답 확인');
 await checkNotebooks(tab,b);ok('손풀이 20개 · 필기/지우개/취소/복원/PNG · 키보드 탭 · 펜/터치 분리 · 저장 실패 안내');
+await verifyFeedbackUI(b);ok('기말 범위 우선 단원 카드 · 차시 기준 진행 표시 · 기록 내보내기→다른 기기 불러오기 · 요약 코드 내용 표시 · 반 결과 모아 보기·CSV · 인쇄 시 백업 숨김');
 await verifyExamUI(b);ok('나의 시험 준비: 잠금/예상 점수 범위 표시 · 오답 유형 맞춤 복습 · 변형 문제 채점·연속 정답·완료 · 같은 번호 같은 문제 · 좁은 화면');
 await verifyMistakesUI(b);ok('오답노트 화면: 채점 후 자동 수집·이유 저장 · 다른 날 졸업 · 실험/복습 문항 · 필터·URL · 두 번 눌러 빼기 · A4 인쇄 머리글(이름 미저장) · 좁은 화면');
 await verifyLabsUI(tab);ok('실험 8개 페이지 · 3D/2D 화면 · 조작 결과(단면·정사영·최단경로·접하는 구·벡터 합·배·직선과 평면·유사도) · 실험 채점 · 좁은 화면 · 내부 링크');

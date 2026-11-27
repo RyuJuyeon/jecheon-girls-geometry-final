@@ -6,6 +6,8 @@ import {cubeSection,classify,perimeterSides,dRange} from '../public/labs/geometr
 const sandbox={};vm.createContext(sandbox);vm.runInContext(fs.readFileSync(new URL('../public/answer.js',import.meta.url),'utf8'),sandbox);const {parse,grade}=sandbox.GeometryAnswer;
 const near=(a,b,e=1e-9)=>assert.ok(Math.abs(a-b)<e,`${a} != ${b}`);
 const dot=(a,b)=>a.reduce((s,x,i)=>s+x*b[i],0),sub=(a,b)=>a.map((x,i)=>x-b[i]),add=(a,b)=>a.map((x,i)=>x+b[i]),scale=(a,k)=>a.map(x=>x*k),norm=a=>Math.hypot(...a);
+// 여러 평면으로 잘라 본 단면의 변의 개수 최댓값
+function maxSidesFound(){let best=0;for(const n of [[1,1,1],[1,2,3],[3,2,1],[1,1,2],[2,3,5],[1,-1,2],[2,1,1],[1,3,2]]){const [lo,hi]=dRange(n);for(let i=0;i<=80;i++)best=Math.max(best,cubeSection(n,lo+(hi-lo)*i/80).length)}return best}
 export function verifyLabsMath(){
  assert.equal(labs.length,8);assert.equal(new Set(labs.map(l=>l.id)).size,8);
  // 실험별 독립 계산값 (문항 데이터의 정답 문자열과 별도로 계산)
@@ -15,7 +17,7 @@ export function verifyLabsMath(){
  const lp=(()=>{const A=[1,0,2],d=[1,1,-1],n=[1,2,1],t=(11-dot(n,A))/dot(n,d);return {t,P:add(A,scale(d,t)),k:-(1+1)/2}})();
  const cos=(a,b)=>dot(a,b)/(norm(a)*norm(b));
  const computed={
-  'cube-section':[null,dot([1,1,1],[1,1,1]),perimeterSides(hex)[0]],
+  'cube-section':[null,maxSidesFound(),dot([1,1,1],[1,1,1]),perimeterSides(hex)[0]],
   'shadow':[16*Math.cos(Math.PI/3),Math.acos(8*Math.sqrt(3)/16),4*Math.PI*Math.cos(Math.PI/3)],
   'shortest-path':[shortest.A2z,shortest.min,shortest.P[0],shortest.P[1]],
   'tangent-sphere':[Math.hypot(3,4),4,1+16],
@@ -32,7 +34,7 @@ export function verifyLabsMath(){
  // 선택형 정답과 실험 계산의 일치
  assert.equal(hex.length,6);assert.equal(classify(hex),'정육각형');
  const maxSides=Math.max(...[[1,1,1],[1,2,3],[3,2,1],[1,1,2],[2,3,5],[1,-1,2]].flatMap(n=>{const [lo,hi]=dRange(n);return Array.from({length:41},(_,i)=>cubeSection(n,lo+(hi-lo)*i/40).length)}));assert.equal(maxSides,6);
- assert.equal(labs.find(l=>l.id==='cube-section').checks[0].options[4],'칠각형');
+ assert.match(labs.find(l=>l.id==='cube-section').checks[0].options[0],/면은 6개/);assert.ok(!labs.find(l=>l.id==='cube-section').steps.join(' ').includes('칠각형'));
  near(shortest.best,6,.02);assert.ok(shortest.best>=6-1e-9);
  const sim=[[1,3,0],[6,1,2],[0,2,5]].map(b=>cos([3,0,1],b));assert.equal(sim.indexOf(Math.max(...sim)),labs.find(l=>l.id==='similarity').checks[2].answer);
  assert.equal(dot([1,2,1],[1,-1,1]),0);assert.notEqual(dot([1,2,1],[-1,0,1]),6); // line-plane k=-1에서 평행, A는 평면 밖
@@ -66,7 +68,7 @@ export async function verifyLabsUI(tab){
  await tab.getByRole('button',{name:'처음 상태'}).click();await tab.getByRole('button',{name:'u를 n과 수직으로'}).click();s=await state(tab);assert.equal(s.dot,0);assert.match(s.relation,/평행/);
  await tab.goto(base+'lab-similarity.html');await tab.waitForFunction(()=>window.labState);await setVector(tab,'학생 B의 점수',[2,1,2]);s=await state(tab);near(s.cos,8/9);await tab.getByRole('button',{name:'b를 a의 2배로'}).click();near((await state(tab)).cos,1);
  // 실험 확인 문제 자동 채점
- await tab.goto(base+'lab-cube-section.html');await tab.locator('form.autocheck input[name=f0][value="4"]').check();await tab.locator('form.autocheck input[name=f1]').fill('3');await tab.locator('form.autocheck input[name=f2]').fill('√2');await tab.locator('form.autocheck button[type=submit]').click();await tab.locator('.check-result').filter({hasText:'모두 맞았어요'}).waitFor();
+ await tab.goto(base+'lab-cube-section.html');await tab.locator('form.autocheck input[name=f0][value="0"]').check();await tab.locator('form.autocheck input[name=f1]').fill('6');await tab.locator('form.autocheck input[name=f2]').fill('3');await tab.locator('form.autocheck input[name=f3]').fill('√2');await tab.locator('form.autocheck button[type=submit]').click();await tab.locator('.check-result').filter({hasText:'모두 맞았어요'}).waitFor();
  assert.deepEqual(errors,[]);
  await tab.goto(base+'lab-cube-section.html');await tab.waitForFunction(()=>window.labState);await tab.waitForTimeout(300);await tab.locator('.lab-stage').screenshot({path:'output/qa/lab-cube.png'});
 }

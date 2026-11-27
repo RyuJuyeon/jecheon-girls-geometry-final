@@ -30,6 +30,7 @@ npm run serve
 
 ## 수정과 산출물
 
+- `content/counts.mjs`: 화면에 보이는 모든 개수 계산. `public/backup.js`: 학습 기록 내보내기·불러오기. `public/summary.js`, `class-summary.html`: 이름 없는 결과 요약 코드와 반 결과 모아 보기. 자세한 내용은 docs/FEEDBACK-1127.md.
 - `public/readiness.js`, `public/exam-ready.js`, `public/drill/`: 나의 시험 준비(게이지·예상 점수 범위·맞춤 복습)와 변형 문제 연습. 자세한 내용은 docs/EXAM-READY.md.
 - `public/mistakes.js`, `public/mistakes-page.js`, `scripts/mistakes.mjs`: 오답노트(자동 수집·이유·졸업·인쇄). 자세한 내용은 docs/MISTAKES.md.
 - `content/labs.mjs`, `public/labs/`: 기하 실험실 8개(공간·벡터, Three.js). 자세한 내용은 docs/LABS.md.

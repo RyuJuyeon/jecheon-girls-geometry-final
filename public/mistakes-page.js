@@ -58,6 +58,6 @@ ${open?`<div class="m-actions"><a class="small-button" href="${esc(item.href)}">
  function restore(){list.querySelectorAll('details').forEach(d=>{d.open=d.dataset.wasOpen==='1'})}
  window.addEventListener('beforeprint',prepare);window.addEventListener('afterprint',restore);
  document.querySelector('#m-print').addEventListener('click',()=>{if(!list.querySelector('.m-card')){document.querySelector('#m-print-status').textContent='인쇄할 문제가 없어요. "보기"를 바꿔 보세요.';return}prepare();window.print()});
- window.addEventListener('storage',e=>{if(e.key===M.KEY)render()});
+ window.addEventListener('storage',e=>{if(e.key===M.KEY)render()});window.addEventListener('geometry-data-changed',()=>render());const bk=document.querySelector('#m-backup');if(bk&&window.GeometryBackup)window.GeometryBackup.mount(bk);
  render();
 })();
